@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
+import { HmacguardGuard } from './hmacguard/hmacguard.guard';
 
 @Controller()
 export class AppController {
@@ -8,5 +9,11 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('users')
+  @UseGuards(HmacguardGuard)
+  getUsers(@Query('q') q: string): string {
+    return 'This will return all users with name: ' + q;
   }
 }
